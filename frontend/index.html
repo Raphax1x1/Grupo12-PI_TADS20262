@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Tributos - Hortifrúti e Negócios</title>
-    <!-- Usando Bootstrap para agilizar um layout limpo, responsivo e com botões grandes -->
+    <!-- Usando Bootstrap para layout limpo, responsivo e com botões grandes -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -34,10 +34,10 @@
 
                         <div class="mb-4">
                             <label for="preco" class="form-label fw-semibold">Preço Final de Venda (R$):</label>
-                            <input type="number" step="0.01" id="preco" class="form-control" placeholder="Ex: 10,00" required>
+                            <input type="number" step="0.01" min="0.01" id="preco" class="form-control" placeholder="Ex: 25.00" required>
                         </div>
 
-                        <button type="submit" class="btn btn-success w-100 btn-lg shadow-sm">Calcular Impostos</button>
+                        <button type="submit" class="btn btn-success w-100 btn-lg shadow-sm" id="btnCalcular">Calcular Impostos</button>
                     </form>
                 </div>
 
@@ -51,7 +51,7 @@
                     </div>
 
                     <h5 class="fw-semibold text-secondary fs-6">Detalhamento por Tributo:</h5>
-                    <ul class="list-group list-group-flush small">
+                    <ul class="list-group list-group-flush small" id="listaTributos">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             ICMS: <span id="detICMS"></span>
                         </li>
@@ -65,25 +65,45 @@
                             ISS: <span id="detISS"></span>
                         </li>
                     </ul>
-                    <p class="text-muted mt-3" style="font-size: 0.8rem;">* Nota: Os valores apresentados têm caráter estimativo e informativo, auxiliando no planejamento inicial do negócio[cite: 11].</p>
+                    <p class="text-muted mt-3" style="font-size: 0.8rem;">* Nota: Os valores apresentados têm caráter estimativo e informativo, auxiliando no planejamento inicial do negócio.</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Determina a URL base: usa a mesma origem se servido via http, ou http://127.0.0.1:8000 se aberto via arquivo local (file:///)
+        const API_BASE = window.location.protocol.startsWith('http') ? '' : 'http://127.0.0.1:8000';
+
         // Carregar categorias ao abrir a página
         window.addEventListener('DOMContentLoaded', async () => {
+            const select = document.getElementById('categoria');
             try {
-                const response = await fetch('/api/categorias');
+                const response = await fetch(`${API_BASE}/api/categorias`);
+                if (!response.ok) throw new Error('Falha ao obter categorias do servidor.');
                 const categorias = await response.json();
-                const select = document.getElementById('categoria');
+                
                 select.innerHTML = '<option value="" disabled selected>Selecione uma opção...</option>';
-                for (const [id, cat] of Object.entries(categorias)) {
-                    select.innerHTML += `<option value="${id}">${cat.nome}</option>`;
+                
+                if (Array.isArray(categorias)) {
+                    categorias.forEach(cat => {
+                        const opt = document.createElement('option');
+                        opt.value = cat.id;
+                        opt.textContent = cat.nome;
+                        select.appendChild(opt);
+                    });
+                } else {
+                    for (const [id, cat] of Object.entries(categorias)) {
+                        const opt = document.createElement('option');
+                        opt.value = id;
+                        opt.textContent = cat.nome;
+                        select.appendChild(opt);
+                    }
                 }
             } catch (error) {
-                alert('Erro ao carregar as categorias do sistema.');
+                console.error(error);
+                select.innerHTML = '<option value="" disabled selected>Erro ao carregar categorias. O servidor está ativo?</option>';
+                alert('Erro ao carregar as categorias. Verifique se o servidor FastAPI está em execução em http://127.0.0.1:8000');
             }
         });
 
@@ -93,35 +113,75 @@
             const categoria_id = document.getElementById('categoria').value;
             const preco_venda = document.getElementById('preco').value;
 
+            if (!categoria_id) {
+                alert('Por favor, selecione uma categoria.');
+                return;
+            }
+
+            const btn = document.getElementById('btnCalcular');
+            btn.disabled = true;
+            btn.innerText = 'Calculando...';
+
             try {
-                const response = await fetch('/api/calcular', {
+                const response = await fetch(`${API_BASE}/api/calcular`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ categoria_id, preco_venda })
+                    body: JSON.stringify({ 
+                        categoria_id: categoria_id, 
+                        preco_final: preco_venda,
+                        preco_venda: preco_venda 
+                    })
                 });
 
                 const data = await response.json();
 
                 if (!response.ok) {
-                    alert(data.erro || 'Erro ao realizar cálculo.');
+                    const msgErro = data.detail || data.erro || 'Erro ao realizar cálculo.';
+                    alert(msgErro);
                     return;
                 }
 
+                // Extração dos valores com fallback para diferentes formatos
+                const precoNum = Number(data.preco_final_informado ?? data.preco_venda ?? preco_venda);
+                const percTotal = typeof data.percentual_total === 'number' 
+                    ? data.percentual_total.toFixed(2) 
+                    : String(data.total_tributos_percentual || '').replace('%', '');
+                const valTotalNum = Number(data.total_tributos_valor ?? data.valor_tributos_total ?? 0);
+                const valLiqNum = Number(data.valor_liquido_estimado ?? data.valor_liquido ?? 0);
+
                 // Preencher campos do resultado
                 document.getElementById('resCategoria').innerText = data.categoria;
-                document.getElementById('resPreco').innerText = data.preco_venda.toFixed(2);
-                document.getElementById('resPercTotal').innerText = data.percentual_total.toFixed(2);
-                document.getElementById('resValTotal').innerText = data.valor_tributos_total.toFixed(2);
-                document.getElementById('resLiquido').innerText = data.valor_liquido.toFixed(2);
+                document.getElementById('resPreco').innerText = precoNum.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                document.getElementById('resPercTotal').innerText = percTotal;
+                document.getElementById('resValTotal').innerText = valTotalNum.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                document.getElementById('resLiquido').innerText = valLiqNum.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-                document.getElementById('detICMS').innerText = `${data.detalhes.icms.aliquota}% (R$ ${data.detalhes.icms.valor.toFixed(2)})`;
-                document.getElementById('detPIS').innerText = `${data.detalhes.pis.aliquota}% (R$ ${data.detalhes.pis.valor.toFixed(2)})`;
-                document.getElementById('detCOFINS').innerText = `${data.detalhes.cofins.aliquota}% (R$ ${data.detalhes.cofins.valor.toFixed(2)})`;
-                document.getElementById('detISS').innerText = `${data.detalhes.iss.aliquota}% (R$ ${data.detalhes.iss.valor.toFixed(2)})`;
+                // Detalhamento dos tributos
+                if (data.detalhes) {
+                    document.getElementById('detICMS').innerText = `${data.detalhes.icms.aliquota.toFixed(2)}% (R$ ${data.detalhes.icms.valor.toFixed(2)})`;
+                    document.getElementById('detPIS').innerText = `${data.detalhes.pis.aliquota.toFixed(2)}% (R$ ${data.detalhes.pis.valor.toFixed(2)})`;
+                    document.getElementById('detCOFINS').innerText = `${data.detalhes.cofins.aliquota.toFixed(2)}% (R$ ${data.detalhes.cofins.valor.toFixed(2)})`;
+                    document.getElementById('detISS').innerText = `${data.detalhes.iss.aliquota.toFixed(2)}% (R$ ${data.detalhes.iss.valor.toFixed(2)})`;
+                } else if (data.detalhamento_por_tributo) {
+                    const findTrib = (name) => data.detalhamento_por_tributo.find(t => t.tributo.toUpperCase() === name.toUpperCase()) || { percentual: '0.00%', valor_embutido: 0 };
+                    const icms = findTrib('ICMS');
+                    const pis = findTrib('PIS');
+                    const cofins = findTrib('COFINS');
+                    const iss = findTrib('ISS');
+                    document.getElementById('detICMS').innerText = `${icms.percentual} (R$ ${Number(icms.valor_embutido).toFixed(2)})`;
+                    document.getElementById('detPIS').innerText = `${pis.percentual} (R$ ${Number(pis.valor_embutido).toFixed(2)})`;
+                    document.getElementById('detCOFINS').innerText = `${cofins.percentual} (R$ ${Number(cofins.valor_embutido).toFixed(2)})`;
+                    document.getElementById('detISS').innerText = `${iss.percentual} (R$ ${Number(iss.valor_embutido).toFixed(2)})`;
+                }
 
                 document.getElementById('resultado').classList.remove('d-none');
+                document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
             } catch (error) {
-                alert('Erro de conexão com o servidor.');
+                console.error('Erro:', error);
+                alert('Erro de conexão com o servidor. Certifique-se de que o backend está ativo.');
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Calcular Impostos';
             }
         });
     </script>

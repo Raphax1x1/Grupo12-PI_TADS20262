@@ -13,6 +13,16 @@ CATEGORIAS_TRIBUTOS = {
             "ISS": Decimal("0.00"),
         },
     },
+    "hortifruti_minimamente_processado": {
+        "nome": "Hortifrúti Minimamente Processado / Embalado",
+        "descricao": "Hortaliças e frutas descascadas, cortadas ou embaladas (ICMS 7%, PIS 1.65%, COFINS 7.60%)",
+        "aliquotas": {
+            "ICMS": Decimal("0.07"),
+            "PIS": Decimal("0.0165"),
+            "COFINS": Decimal("0.076"),
+            "ISS": Decimal("0.00"),
+        },
+    },
     "pereciveis": {
         "nome": "2. Perecíveis (Frios, Laticínios, Carnes)",
         "descricao": "Regime misto com isenção/redução ou ICMS-ST",
