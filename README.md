@@ -4,41 +4,41 @@ Repositório da 2ª Etapa do Projeto Integrador (TADS-SENAC) - Web API de Cálcu
 Projeto Integrador apresentado ao Centro Universitário SENAC - Serviço Nacional de Aprendizagem Comercial, como requisito de avaliação semestral do curso de Tecnologia em Análise e Desenvolvimento de Sistemas.
 
 
-# API de Cálculo de Tributos Embutidos no Preço Final da Mercadoria
+# API de Cálculo de Tributos Embutidos no Preço Final da Mercadoria<br>
 
-**Projeto Integrador — Desenvolvimento de Sistemas Orientado a Dispositivos Móveis e Baseados na Web**  
-**Curso:** Tecnologia em Análise e Desenvolvimento de Sistemas (TADS) — Centro Universitário SENAC EAD  
-**Semestre/Ano:** 2026/2  
-**Grupo:** Grupo 12  
-**Componentes:**
-Allan Alves Menezes
-Amanda Sartoreli Borcsik
-Angela Terumi Fushita
-Gabriel Lima Lucas Santos
-Monique Veloso de Jesus
-Raphael Alves Vieira
+**Projeto Integrador — Desenvolvimento de Sistemas Orientado a Dispositivos Móveis e Baseados na Web**<br>
+**Curso:** Tecnologia em Análise e Desenvolvimento de Sistemas (TADS) — Centro Universitário SENAC EAD<br>
+**Semestre/Ano:** 2026/2<br>
+**Grupo:** Grupo 12<br>
+**Componentes:**<br>
+Allan Alves Menezes<br>
+Amanda Sartoreli Borcsik<br>
+Angela Terumi Fushita<br>
+Gabriel Lima Lucas Santos<br>
+Monique Veloso de Jesus<br>
+Raphael Alves Vieira<br>
 
 ---
 
-## 1. Sobre o Projeto e Prova de Conceito (PoC)
+## 1. Sobre o Projeto e Prova de Conceito (PoC)<br>
 
 Este projeto consiste em uma solução híbrida (Web API REST + interface simplificada responsiva) desenvolvida para auxiliar pequenos empreendedores e comerciantes — com foco inicial no setor de **hortifruti** — a compreenderem e simularem o percentual e o valor monetário dos tributos embutidos no preço final de venda de suas mercadorias e serviços (ICMS, PIS, COFINS e ISS).
 
-### Escopo da Prova de Conceito (PoC — 2ª Entrega)
-Com base no levantamento de requisitos e personas da 1ª Entrega (**Antônio Pereira**, baixa familiaridade tecnológica; e **Marcos Oliveira**, familiaridade intermediária), esta PoC implementa a jornada principal de **simulação rápida de tributos embutidos por categoria de produto**:
-* Seleção simplificada da categoria de produto/serviço com descrição explicativa;
-* Entrada do preço final de venda praticado;
+### Escopo da Prova de Conceito (PoC — 2ª Entrega)<br>
+Com base no levantamento de requisitos e personas da 1ª Entrega (**Antônio Pereira**, baixa familiaridade tecnológica; e **Marcos Oliveira**, familiaridade intermediária), esta PoC implementa a jornada principal de **simulação rápida de tributos embutidos por Categoria de produto**:<br>
+* Seleção simplificada da categoria de produto/serviço com descrição explicativa;<br>
+* Entrada do preço final de venda praticado;<br>
 * Cálculo exato (utilizando o tipo `Decimal` para evitar erros de arredondamento financeiro) e exibição clara do valor total dos tributos, do valor líquido estimado que permanece para o comércio e do detalhamento por imposto[cite: 17, 18].
 
 ---
 
 ## 2. Tecnologias Utilizadas
 
-* **Backend:** Python 3.12+ e FastAPI[cite: 18]
-* **Servidor ASGI:** Uvicorn
-* **Precisão Monetária:** Módulo nativo `decimal` (`Decimal` e `ROUND_HALF_UP`)
-* **Frontend:** HTML5, CSS3 e JavaScript (Vanilla JS com Fetch API)[cite: 18]
-* **Versionamento:** Git e GitHub[cite: 9]
+* **Backend:** Python 3.12+ e FastAPI[cite: 18]<br>
+* **Servidor ASGI:** Uvicorn<br>
+* **Precisão Monetária:** Módulo nativo `decimal` (`Decimal` e `ROUND_HALF_UP`)<br>
+* **Frontend:** HTML5, CSS3 e JavaScript (Vanilla JS com Fetch API)[cite: 18]<br>
+* **Versionamento:** Git e GitHub[cite: 9]<br>
 
 ---
 
