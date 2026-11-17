@@ -143,13 +143,13 @@ Resposta retornada (JSON):
 ## 6. Demonstração em Vídeo
 Link do vídeo de demonstração 
 
-## 7. Integrantes do Grupo 12
-Allan Alves Menezes
-Amanda Sartoreli Borcsik
-Angela Terumi Fushita
-Gabriel Lima Lucas Santos
-Monique Veloso de Jesus
-Raphael Alves Vieira
+## 7. Integrantes do Grupo 12<br>
+Allan Alves Menezes<br>
+Amanda Sartoreli Borcsik<br>
+Angela Terumi Fushita<br>
+Gabriel Lima Lucas Santos<br>
+Monique Veloso de Jesus<br>
+Raphael Alves Vieira<br>
 
 Aviso Legal: Os valores e alíquotas apresentados nesta Prova de Conceito têm caráter estritamente acadêmico, estimativo e informativo, não substituindo a orientação de um profissional de contabilidade
 
