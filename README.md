@@ -72,16 +72,19 @@ cd Grupo12-PI_TADS20262
 
 Passo 2: Configurar e Iniciar o Servidor Backend (API)
 Acesse a pasta backend:
+
 ```
 cd backend
+```
 Crie e ative o ambiente virtual (venv):
-´´´´
 No Windows:
+
 ```
 python -m venv venv
 venv\Scripts\activate
 ```
 No Linux / macOS:
+
 ```
 python3 -m venv venv
 source venv/bin/activate
