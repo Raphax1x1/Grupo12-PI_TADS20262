@@ -29,9 +29,7 @@ Com base no levantamento de requisitos e personas da 1ª Entrega (**Antônio Per
 * Seleção simplificada da categoria de produto/serviço com descrição explicativa;<br>
 * Entrada do preço final de venda praticado;<br>
 * Cálculo exato (utilizando o tipo `Decimal` para evitar erros de arredondamento financeiro) e exibição clara do valor total dos tributos, do valor líquido estimado que permanece para o comércio e do detalhamento por imposto[cite: 17, 18].
-
-****Documento revisado - 1a entrega***
-docs/PI-entrega 1-revisado.pdf
+* Relatório da 1a entrega revisado pode ser consultado em /docs/PI-entrega 1-revisado.pdf
 ---
 
 ## 2. Tecnologias Utilizadas
