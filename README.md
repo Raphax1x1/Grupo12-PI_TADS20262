@@ -62,32 +62,38 @@ Grupo12-PI_TADS20262/
 Pré-requisitos
 Python 3.10 ou superior instalado na máquina (com a opção Add Python to PATH habilitada);
 
-Navegador web moderno (Chrome, Edge, Firefox ou Safari).
+Navegador web  (Chrome, Edge, Firefox ou Safari).
 
 Passo 1: Clonar o Repositório
+```
 git clone [https://github.com/aterumi/Grupo12-PI_TADS20262.git](https://github.com/aterumi/Grupo12-PI_TADS20262.git)
 cd Grupo12-PI_TADS20262
+```
 
 Passo 2: Configurar e Iniciar o Servidor Backend (API)
 Acesse a pasta backend:
-
+```
 cd backend
 Crie e ative o ambiente virtual (venv):
-
+´´´´
 No Windows:
+```
 python -m venv venv
 venv\Scripts\activate
-
+```
 No Linux / macOS:
+```
 python3 -m venv venv
 source venv/bin/activate
-
+```
 Instale as dependências necessárias:
+```
 pip install -r requirements.txt
-
+```
 Inicie o servidor local da API:
+```
 uvicorn main:app --reload
-
+```
 O servidor estará ativo em: http://127.0.0.1:8000
 
 A documentação interativa (Swagger UI) pode ser acessada em: http://127.0.0.1:8000/docs
@@ -107,12 +113,14 @@ POST    /simular        Recebe o ID da categoria e o preço final de venda, reto
 
 Exemplo de Requisição (POST /simular)
 Corpo enviado (JSON):
+```
 {
   "categoria_id": "hortifruti_minimamente_processado",
   "preco_final": 25.00
 }
-
+```
 Resposta retornada (JSON):
+```
 {
   "categoria": "Hortifrúti Minimamente Processado / Embalado",
   "preco_final_informado": 25.0,
@@ -127,6 +135,7 @@ Resposta retornada (JSON):
   ],
   "aviso": "Valores estimativos e informativos; não substituem orientação contábil."
 }
+```
 
 ## 6. Demonstração em Vídeo
 Link do vídeo de demonstração 
